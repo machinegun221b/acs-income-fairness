@@ -30,6 +30,9 @@ ACS (American Community Survey) Income Dataset
 ### Label
 Income (PINCP in Dataset)
 
+Putting the sample data in here, 'cause I wish more people did that. >_<
+<img width="745" height="205" alt="Screenshot 2026-04-03 at 2 56 14 AM" src="https://github.com/user-attachments/assets/3c7a4dcd-f4fe-424d-9d83-3586697c4fbc" />
+
 We convert the Target value to Binary for this purpose:
 - 1 for > 50000.0
 - 0 for other
@@ -39,7 +42,8 @@ We convert the Target value to Binary for this purpose:
 ### Sensitive Attributes in the dataset include:
 - Age
 - Race
-- Sex  <br>
+- Sex
+
 We use these to help us figure out the fairness of the model across demographics.
 
 ## Project Workflow
@@ -61,7 +65,7 @@ We use these to help us figure out the fairness of the model across demographics
 11. Remediated Fairness Evaluation 
 
 ### The Model
-We use a simple Keras model.
+We use a simple Keras model.  <br>
 Minimally tuned and with Functional API for preprocessing.
 
 ### Base Model Fairness Evaluation
@@ -85,7 +89,7 @@ Minimally tuned and with Functional API for preprocessing.
   - TensorFlow Model Remediation → during training to intervene &
     - minimise error rate b/w the groups
 
-But to do so, we need to
+But to do so, we need to -
 ### Setup Positively-Labeled Subsets
 1. Sensitive Group/Protected Class
    - only +ve labelled female examples
@@ -128,16 +132,30 @@ Same evaluation process as base model. To reiterate:
 
 ## Insights
 In the initial model - Base Model, we see in the Fairness Indicators exploration:
-- Metric that performed equally well across demographic groups: 
-The overall AUC for the base model was around 0.88, with male and female groups performing just as well with 0.87 and 0.88, respectfully. A performance metric like the AUC would lead one to believe that the model performs well across groups.
-- Metric that was disproportionate across demographic groups - even though its overall performance seemed promising: 
-However, when evaluting with respect to the false negative rate, the results show that performance is disappropriately favoring males, with female performance is nearly 27% worse than overall baseline. In fact, what the graphs reveal is that males perform better than the baseline by around 16%.
+- The AUC made it seem like, across demographic groups, the model performed well.
+  - w/ the overall base model AUC being ~ 0.88 and
+  - female group being 0.88
+  - male group being 0.87
+<img width="874" height="680" alt="Screenshot 2026-04-03 at 2 50 37 AM" src="https://github.com/user-attachments/assets/aec62436-9079-4a3c-87e6-ad484c870fa6" />
+
+- But thanks to the FNR, we saw the disproportionate distribution across demographic groups - despite its overall performance seeming promising: 
+  - it shows that the performance is disappropriately favoring males
+  - the female performance almost 27% worse than overall baseline. 
+  - the males actually perform even better than the baseline by around 16%.
+<img width="872" height="715" alt="Screenshot 2026-04-03 at 2 51 22 AM" src="https://github.com/user-attachments/assets/d1dccd3a-b969-407d-af6b-2a6d9de82057" />
 
 And in the final remediated MinDiff model, we see:
-- AUC indicates that the MinDiff model performance, compared to the base model, as a result of penalising the model during training for differences in error rates, 
-Though applying MinDiff may come with some performance tradeoffs in comparison to the original task, in this exercise, the MinDiff model performed nearly equally as well as the base model, at least in terms of AUC. What this is suggesting is that, in this context, MinDiff can be effective while not worsening overall performance.
-- FNR reveals that between the MinDiff and base model - the differences are 
-Here is where we see the MinDiff performing better than the base model. Not only is the gap in error rates between male and female smaller, but the FNR for female went down drastically from nearly 35% all the way to 30%, while the overall performance still remains relatively the same (29% in MinDiff vs. 28%)
+- One key insight is that, despite the tradeoffs in performance one can expect from applying MinDiff, we see that the:
+  - MinDiff model performed almost as well as the base model, at least in terms of AUC.
+  - MinDiff is quite effective in this case, while not worsening overall performance!
+ <img width="873" height="675" alt="Screenshot 2026-04-03 at 2 53 12 AM" src="https://github.com/user-attachments/assets/8db1a9c4-6828-423e-9b38-ff53e4cccd8c" />
+
+- While FNR reveals the real difference b/w the base model and MinDiff.
+  - the FNR for female went way down from ~ 35% to 30%
+  - MinDiff performance >> base model performance.
+  - the gap in error rates between male and female smaller
+  - and overall performance still remained relatively the same (29% vs. 28%)
+<img width="868" height="714" alt="Screenshot 2026-04-03 at 2 53 50 AM" src="https://github.com/user-attachments/assets/c7e044d2-34c7-41eb-b37c-e281c572fcd5" />
 
 #
 
