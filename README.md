@@ -15,7 +15,7 @@
 ACS (American Community Survey) Income Dataset
 - it's an updated & reconstructed version of the UCI Adult dataset
 - it's one of several datasets created by Ding et al - an alternative to the UCI Adult dataset.
-- contains 1,664,500 datapoints
+- contains ~1.6M datapoints
 - from USA-wide (50 states + Puerto Rico) ACS Public Use Microdata Sample (PUMS), 2018.
 - includes individuals
   - age > 16 years
