@@ -85,9 +85,10 @@ Minimally tuned and with Functional API for preprocessing.
 ## The Issues we found in Fairness
 - the FNRs (false negative rates) reveal disproportionate outcomes b/w the Female & Male groups.
   - equality of opportunity
+
 - model training goal is to decrease the FNR gap between the groups.
   - TensorFlow Model Remediation → during training to intervene &
-    - minimise error rate b/w the groups
+    - minimise distributional differences between groups
 
 But to do so, we need to -
 ### Setup Positively-Labeled Subsets
@@ -99,7 +100,7 @@ But to do so, we need to -
 ## Minimise the differences with MinDiff
 We equalise the distributions between the subsets using MinDiff:
 - a TF model remediation technique
-- helps balance error rates (FNR here) b/w demographic groups
+- encourages similar prediction distributions across demographic groups
 - works by penalising distributional differences during training
 
 ### again, we need
